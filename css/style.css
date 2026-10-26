@@ -489,3 +489,8 @@ dialog.wide{max-width:1150px;width:96%;max-height:92vh;padding:16px 20px}
 @media(max-width:600px){.lhead2{gap:8px;padding:8px 10px}.lhead2 img,.lhead2 .logo-ph{height:46px}.lttl .ltitle{font-size:.95rem}.lttl .luni,.lttl .lsub{font-size:.72rem}}
 .lbox{width:calc(100% - 32px)}
 @media(max-width:900px){.lpage{min-height:100vh;min-height:100dvh}}
+#who .inlink.adm{background:#fff;border:2px solid var(--teal);color:var(--teal);padding:1px 12px}#who .inlink:hover{filter:brightness(.95)}
+/* زر «ابدأ التعلم» البارز في الصفحة الرئيسية */
+.btn.gostart{font-size:1.35rem;padding:12px 56px;background:linear-gradient(135deg,var(--teal),#14b3a8);box-shadow:0 0 0 5px var(--gold-l),0 0 0 8px var(--gold),0 14px 30px rgba(15,143,135,.4);animation:gsPulse 2.2s ease-in-out infinite}
+.btn.gostart:hover{transform:translateY(-3px) scale(1.04);background:linear-gradient(135deg,#0b756f,var(--teal))}
+@keyframes gsPulse{50%{box-shadow:0 0 0 9px var(--gold-l),0 0 0 12px color-mix(in srgb,var(--gold) 60%,transparent),0 14px 30px rgba(15,143,135,.4)}}

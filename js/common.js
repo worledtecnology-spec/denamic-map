@@ -21,7 +21,7 @@ function buildChrome(){
 }
 function drawWho(){
   const w=document.getElementById("who");if(!w)return;const me=Store.me;
-  w.innerHTML=me?`<span class="who">👤 ${esc(me.name)}</span><button class="out" id="logout">خروج</button>`:`<a class="inlink" href="login.html">🔑 تسجيل الدخول</a>`;
+  w.innerHTML=me?`<span class="who">👤 ${esc(me.name)}</span><button class="out" id="logout">خروج</button>`:`<a class="inlink" href="login.html">🔑 تسجيل دخول الطالب</a><a class="inlink adm" href="researcher.html">🔐 تسجيل دخول admin</a>`;
   if(me)document.getElementById("logout").onclick=async()=>{await Store.logout();location.href="index.html"};
 }
 
@@ -62,5 +62,5 @@ document.addEventListener("DOMContentLoaded",()=>{
   if(PAGE()=="researcher"||PAGE()=="login")return;
   Store.ready().then(me=>{drawWho();if(me)Store.log("page",{name:PAGE()=="content"&&window.MODULE_ID?"module-"+window.MODULE_ID:PAGE()});
     else if(NEEDS_LOGIN.includes(PAGE()))toLogin()})
-   .catch(e=>{console.error(e);toast("تعذّر الاتصال بالخادم. تأكد من الإنترنت ثم حدّث الصفحة.")});
+   .catch(e=>{console.error(e);drawWho();toast("تعذّر الاتصال بالخادم. تأكد من الإنترنت ثم حدّث الصفحة.")});
 });
