@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة متابعة الباحثة | بيئة التعلم الإلكتروني</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"></head><body data-page="researcher"><header id="chrome"></header><main class="wrap rs">
+<section id="rlogin" class="rlog" hidden>
+ <div class="rcard"><span class="rbig">🔐</span><h1>لوحة متابعة الباحثة</h1><p>تابعي نشاط كل تلميذ في البيئة: التقدم، والاختبارات، والأنشطة، وسجل كل ما قام به بالتوقيت.</p>
+  <form id="rlf" novalidate><label>البريد الإلكتروني<input name="email" type="email" dir="ltr" autocomplete="username" required></label>
+  <label>كلمة المرور<input name="pw" type="password" dir="ltr" autocomplete="current-password" required></label>
+  <div class="msg no" role="alert"></div><button class="btn">دخول</button></form></div>
+</section>
+<section id="rapp" class="rapp" hidden>
+ <div class="rtop"><h1>📊 لوحة متابعة الباحثة</h1><span id="rmode" class="rmode"></span>
+  <div class="racts"><button class="btn alt sm" id="rref">🔄 تحديث</button><button class="btn sm" id="radd">➕ إضافة تلميذ</button>
+  <button class="btn alt sm" id="rcsv">⬇ النتائج (Excel)</button><button class="btn alt sm" id="rev">⬇ سجل النشاط (Excel)</button><button class="btn alt sm" id="rout">خروج</button></div></div>
+ <div class="kpis" id="kpis"></div>
+ <div class="rfil"><input id="rq" type="search" placeholder="🔍 ابحث بالاسم أو الكود" aria-label="بحث">
+  <select id="rg" aria-label="المجموعة"><option value="">كل المجموعات</option><option value="interactive">الخريطة التفاعلية</option><option value="static">الخريطة الساكنة</option></select>
+  <select id="rs" aria-label="الترتيب"><option value="name">ترتيب بالاسم</option><option value="pct">ترتيب بالإنجاز</option><option value="seen">ترتيب بآخر نشاط</option></select></div>
+ <div class="tblwrap"><table class="rtbl" id="rtbl"></table></div>
+</section>
+</main>
+<dialog id="addd"><h3>➕ إضافة تلميذ</h3><form id="addf" novalidate>
+ <label>اسم التلميذ<input name="name" required></label>
+ <label>اسم المستخدم (يدخل به التلميذ)<input name="code" dir="ltr" required placeholder="مثال: s01"></label>
+ <label id="pwl">كلمة المرور (6 على الأقل)<input name="pw" dir="ltr" autocomplete="new-password"></label>
+ <label>المجموعة التجريبية<select name="group"><option value="interactive">الخريطة الذهنية التفاعلية</option><option value="static">الخريطة الذهنية الساكنة</option></select></label>
+ <label>الأسلوب المعرفي<input name="style" list="styles" placeholder="اختياري"></label>
+ <datalist id="styles"><option value="معتمد على المجال الإدراكي"><option value="مستقل عن المجال الإدراكي"></datalist>
+ <div class="msg" role="alert"></div><button class="btn">حفظ</button> <button type="button" class="btn alt" onclick="this.closest('dialog').close()">إلغاء</button></form></dialog>
+<dialog id="detd" class="wide"></dialog>
+
+<script src="js/config.js"></script><script src="js/data.js"></script><script src="js/store.js"></script><script src="js/progress.js"></script><script src="js/common.js"></script><script src="js/researcher.js"></script></body></html>
