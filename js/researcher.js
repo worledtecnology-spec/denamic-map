@@ -31,7 +31,7 @@ async function showApp(a){
     catch(x){m.className="msg no";m.textContent=x.user?x.message:"تعذّر الحفظ: "+x.message}};
   $("#rout").onclick=async()=>{await Store.adminLogout();location.href="index.html"};
   $("#rcsv").onclick=exportResults;$("#rev").onclick=exportEvents;
-  ["#rq","#rg","#rs"].forEach(s=>$(s).oninput=draw);
+  ["#rq","#rg","#rs","#rst"].forEach(s=>$(s).oninput=draw);
   load();
 }
 async function load(){
@@ -43,14 +43,15 @@ function kpis(list){
   const n=list.length,avg=n?Math.round(list.reduce((a,s)=>a+overall(s),0)/n):0,all=list.filter(s=>overall(s)==100).length;
   const today=new Date().toDateString(),act=list.filter(s=>s.lastSeen&&new Date(s.lastSeen).toDateString()==today).length;
   const g=k=>list.filter(s=>(s.group||"interactive")==k).length;
-  $("#kpis").innerHTML=[["👥","عدد التلاميذ",n,`تفاعلية ${g("interactive")} • ساكنة ${g("static")}`],["📈","متوسط الإنجاز",avg+"%",""],["🎓","أنهوا كل الموديولات",all,""],["🟢","نشطون اليوم",act,""]]
+  $("#kpis").innerHTML=[["👥","عدد التلاميذ",n,`تفاعلية ${g("interactive")} • ساكنة ${g("static")} | مندفع ${list.filter(s=>s.style=="مندفع").length} • متروي ${list.filter(s=>s.style=="متروي").length}`],["📈","متوسط الإنجاز",avg+"%",""],["🎓","أنهوا كل الموديولات",all,""],["🟢","نشطون اليوم",act,""]]
     .map(k=>`<div class="kpi"><span>${k[0]}</span><div><small>${k[1]}</small><b>${k[2]}</b>${k[3]?`<em>${k[3]}</em>`:""}</div></div>`).join("");
 }
 function draw(){
-  const q=$("#rq").value.trim().toLowerCase(),g=$("#rg").value,so=$("#rs").value;
-  let L=ST.filter(s=>(!g||(s.group||"interactive")==g)&&(!q||(s.name||"").toLowerCase().includes(q)||String(s.code).toLowerCase().includes(q)));
+  const q=$("#rq").value.trim().toLowerCase(),g=$("#rg").value,so=$("#rs").value,sty=$("#rst").value;
+  const styOk=s=>!sty||(sty=="-"?!s.style:s.style==sty);
+  let L=ST.filter(s=>(!g||(s.group||"interactive")==g)&&styOk(s)&&(!q||(s.name||"").toLowerCase().includes(q)||String(s.code).toLowerCase().includes(q)));
   L.sort(so=="pct"?(a,b)=>overall(b)-overall(a):so=="seen"?(a,b)=>(b.lastSeen||0)-(a.lastSeen||0):(a,b)=>String(a.name).localeCompare(b.name,"ar"));
-  kpis(ST.filter(s=>!g||(s.group||"interactive")==g));
+  kpis(ST.filter(s=>(!g||(s.group||"interactive")==g)&&styOk(s)));
   if(!L.length){$("#rtbl").innerHTML=`<tr><td class="empty">${ST.length?"لا توجد نتائج مطابقة.":"لا يوجد تلاميذ بعد. اضغطي «➕ إضافة تلميذ»."}</td></tr>`;return}
   $("#rtbl").innerHTML=`<thead><tr><th>#</th><th>التلميذ</th><th>المجموعة</th><th>الأسلوب المعرفي</th><th>الإنجاز الكلي</th>${MODULES.map(m=>`<th title="${m.title}">م${m.id}</th>`).join("")}<th>القبلي</th><th>البعدي</th><th>آخر نشاط</th><th></th></tr></thead><tbody>`+
    L.map((s,i)=>{const o=overall(s),pr=testSum(s,"pre"),po=testSum(s,"post");
@@ -89,11 +90,11 @@ async function detail(s){
   const d=$("#detd");
   d.innerHTML=`<div class="dhead"><div><h3>👤 ${esc(s.name)} <small dir="ltr">${esc(s.code)}</small></h3><p>الإنجاز الكلي: <b>${overall(s)}%</b> • آخر نشاط: ${fmtT(s.lastSeen)}</p></div>
    <div class="dctl"><label>المجموعة<select id="dg"><option value="interactive">التفاعلية</option><option value="static">الساكنة</option></select></label>
-   <label>الأسلوب المعرفي<input id="ds" list="styles" value="${esc(s.style)}"></label><button class="btn sm" id="dsave">حفظ</button>
+   <label>الأسلوب المعرفي<select id="ds"><option value="">— لم يُحدد —</option><option value="مندفع">مندفع</option><option value="متروي">متروي</option></select></label><button class="btn sm" id="dsave">حفظ</button>
    <button class="btn alt sm danger" id="dreset">مسح التقدم</button><button class="btn alt sm" onclick="this.closest('dialog').close()">إغلاق ✕</button></div></div>
    <div class="dtabs" role="tablist"><button class="on" data-t="p">📈 التقدم والنتائج</button><button data-t="a">🧩 الأنشطة والتقويم الذاتي</button><button data-t="l">🕒 سجل النشاط</button></div>
    <div class="dbody" id="dbody"><p class="empty">⏳ جارٍ التحميل…</p></div>`;
-  d.showModal();d.querySelector("#dg").value=s.group||"interactive";
+  d.showModal();d.querySelector("#dg").value=s.group||"interactive";d.querySelector("#ds").value=s.style||"";
   d.querySelector("#dsave").onclick=async()=>{try{await Store.updateStudent(s.uid,{group:d.querySelector("#dg").value,style:d.querySelector("#ds").value.trim()});
     s.group=d.querySelector("#dg").value;s.style=d.querySelector("#ds").value.trim();draw();toast("✔ تم الحفظ")}catch(e){toast("تعذّر الحفظ")}};
   const rb=d.querySelector("#dreset");rb.onclick=async()=>{if(!rb.dataset.c){rb.dataset.c=1;rb.textContent="⚠️ تأكيد مسح كل تقدم وسجل هذا التلميذ؟";return}

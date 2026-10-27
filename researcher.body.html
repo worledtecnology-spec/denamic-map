@@ -12,6 +12,7 @@
  <div class="kpis" id="kpis"></div>
  <div class="rfil"><input id="rq" type="search" placeholder="🔍 ابحث بالاسم أو الكود" aria-label="بحث">
   <select id="rg" aria-label="المجموعة"><option value="">كل المجموعات</option><option value="interactive">الخريطة التفاعلية</option><option value="static">الخريطة الساكنة</option></select>
+  <select id="rst" aria-label="الأسلوب المعرفي"><option value="">كل الأساليب المعرفية</option><option value="مندفع">مندفع</option><option value="متروي">متروي</option><option value="-">لم يُحدد</option></select>
   <select id="rs" aria-label="الترتيب"><option value="name">ترتيب بالاسم</option><option value="pct">ترتيب بالإنجاز</option><option value="seen">ترتيب بآخر نشاط</option></select></div>
  <div class="tblwrap"><table class="rtbl" id="rtbl"></table></div>
 </section>
@@ -21,7 +22,6 @@
  <label>اسم المستخدم (يدخل به التلميذ)<input name="code" dir="ltr" required placeholder="مثال: s01"></label>
  <label id="pwl">كلمة المرور (6 على الأقل)<input name="pw" dir="ltr" autocomplete="new-password"></label>
  <label>المجموعة التجريبية<select name="group"><option value="interactive">الخريطة الذهنية التفاعلية</option><option value="static">الخريطة الذهنية الساكنة</option></select></label>
- <label>الأسلوب المعرفي<input name="style" list="styles" placeholder="اختياري"></label>
- <datalist id="styles"><option value="معتمد على المجال الإدراكي"><option value="مستقل عن المجال الإدراكي"></datalist>
+ <label>الأسلوب المعرفي<select name="style"><option value="">— لم يُحدد بعد —</option><option value="مندفع">مندفع</option><option value="متروي">متروي</option></select></label>
  <div class="msg" role="alert"></div><button class="btn">حفظ</button> <button type="button" class="btn alt" onclick="this.closest('dialog').close()">إلغاء</button></form></dialog>
 <dialog id="detd" class="wide"></dialog>

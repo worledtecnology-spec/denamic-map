@@ -494,3 +494,11 @@ dialog.wide{max-width:1150px;width:96%;max-height:92vh;padding:16px 20px}
 .btn.gostart{font-size:1.35rem;padding:12px 56px;background:linear-gradient(135deg,var(--teal),#14b3a8);box-shadow:0 0 0 5px var(--gold-l),0 0 0 8px var(--gold),0 14px 30px rgba(15,143,135,.4);animation:gsPulse 2.2s ease-in-out infinite}
 .btn.gostart:hover{transform:translateY(-3px) scale(1.04);background:linear-gradient(135deg,#0b756f,var(--teal))}
 @keyframes gsPulse{50%{box-shadow:0 0 0 9px var(--gold-l),0 0 0 12px color-mix(in srgb,var(--gold) 60%,transparent),0 14px 30px rgba(15,143,135,.4)}}
+/* صفحة التواصل عبر واتساب */
+.wacard{display:flex;flex-direction:column;gap:12px;overflow:auto;min-height:0}
+.wabig{display:flex;align-items:center;gap:14px;padding:12px 18px;border-radius:20px;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;box-shadow:0 10px 24px rgba(18,140,126,.3);transition:transform .2s}
+.wabig:hover{transform:translateY(-2px)}.wabig b{display:block;font-size:1.15rem}.wabig small{font-size:1rem;font-weight:700;opacity:.95}
+.waic{width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;flex:none}
+#cf{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:14px 18px}
+#cf label{display:block;font-weight:700}#cf select{width:100%;margin:4px 0 8px}
+.wabtn{background:#25d366}.wabtn:hover{background:#1ebe5a}

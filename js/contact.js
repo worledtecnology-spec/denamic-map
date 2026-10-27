@@ -1,10 +1,17 @@
-/* نموذج التواصل: تحقق من الحقول ثم إرسال إلى CONTACT_ENDPOINT عند توفره */
+/* صفحة التواصل: تُرسل الرسالة إلى رقم الواتساب المحدد في الإعدادات */
 document.addEventListener("DOMContentLoaded",()=>{
-  const f=document.getElementById("cf"),m=document.getElementById("st");
-  f.onsubmit=async e=>{e.preventDefault();const d=Object.fromEntries(new FormData(f));
-    if(!d.name.trim()||!d.subject.trim()||d.message.trim().length<5){m.className="msg no";m.textContent="أكمل الاسم والموضوع، واكتب رسالة من 5 أحرف على الأقل.";return}
-    if(!APP_CONFIG.CONTACT_ENDPOINT){m.className="msg no";m.textContent="خدمة استقبال الرسائل لم تُفعَّل بعد.";return}
-    try{const r=await fetch(APP_CONFIG.CONTACT_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(d)});
-      if(!r.ok)throw 0;m.className="msg ok";m.textContent="تم إرسال رسالتك. شكرًا لك!";f.reset()}
-    catch(_){m.className="msg no";m.textContent="تعذّر الإرسال. حاول مرة أخرى بعد قليل."}};
+  const num=String(APP_CONFIG.WHATSAPP_NUMBER||"").replace(/\D/g,"");
+  const wa=t=>`https://wa.me/${num}${t?"?text="+encodeURIComponent(t):""}`;
+  const f=document.getElementById("cf"),m=document.getElementById("st"),d=document.getElementById("wadirect");
+  d.href=wa("السلام عليكم، أنا أستخدم بيئة تعلم المفاهيم التكنولوجية ولدي استفسار.");
+  d.onclick=()=>Store.log("contact_whatsapp",{via:"direct"});
+  Store.ready().then(me=>{if(me&&!f.name.value){f.name.value=me.name;f.name.readOnly=true}}).catch(()=>{});
+  f.onsubmit=e=>{e.preventDefault();
+    const name=f.name.value.trim(),msg=f.message.value.trim(),sub=f.subject.value;
+    if(!name||msg.length<3){m.className="msg no";m.textContent="اكتب اسمك ونص الرسالة أولًا.";return}
+    const me=Store.me;
+    const text=`السلام عليكم\nالاسم: ${name}${me?`\nاسم المستخدم: ${me.code}`:""}\nالموضوع: ${sub}\n\n${msg}\n\n— من بيئة تعلم المفاهيم التكنولوجية`;
+    Store.log("contact_whatsapp",{via:"form",subject:sub});
+    window.open(wa(text),"_blank","noopener");
+    m.className="msg ok";m.textContent="✔ تم فتح واتساب، اضغط «إرسال» هناك لإرسال رسالتك.";f.message.value=""};
 });
